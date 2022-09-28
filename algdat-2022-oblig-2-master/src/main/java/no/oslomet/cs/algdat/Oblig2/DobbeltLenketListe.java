@@ -1,11 +1,15 @@
 package no.oslomet.cs.algdat.Oblig2;
 
 
+import java.util.ArrayList;
+
 ////////////////// class DobbeltLenketListe //////////////////////////////
 
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 
 public class DobbeltLenketListe<T> implements Liste<T> {
@@ -37,11 +41,42 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int endringer;         // antall endringer i listen
 
     public DobbeltLenketListe() {
-        throw new UnsupportedOperationException();
+        this.hode = null;
+        this.hale = null;
+        this.antall = 0;
+        this.endringer = 0;
     }
 
     public DobbeltLenketListe(T[] a) {
-        throw new UnsupportedOperationException();
+        // Objects.requireNonNull(a);
+        List<Node<T>> tempList = new ArrayList<Node<T>>();
+        // this.hode = new Node<T>(a[0], null, null);
+        // tempList.add(this.hode);
+        // this.antall += 1;
+        for (int i = 0; i < a.length; i++) {
+            System.out.println(i);
+            for (Node<T> node : tempList) {
+                System.out.println(node.verdi);
+            }
+            if (a[i] != null){
+                if (tempList.size() == 0){
+                    this.hode = new Node<T>(a[i], null, null);
+                    tempList.add(this.hode);
+                    this.antall += 1;
+                }
+                else{
+                    Node<T> node = new Node<T>(a[i], tempList.get(tempList.size()-1), null);
+                    tempList.add(node);
+                    this.antall += 1;
+                }
+            }
+        }
+        if (this.antall>0)
+        this.hale = tempList.get(tempList.size()-1);
+        
+        for (int i = 0; i < this.antall-1; i++) {
+            tempList.get(i).neste = tempList.get(i+1);
+        }
     }
 
     public Liste<T> subliste(int fra, int til) {
@@ -50,12 +85,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public int antall() {
-        throw new UnsupportedOperationException();
+        return this.antall;
     }
 
     @Override
     public boolean tom() {
-        throw new UnsupportedOperationException();
+        if (this.antall == 0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     @Override
@@ -105,11 +145,35 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public String toString() {
-        throw new UnsupportedOperationException();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        Node<T> current = this.hode;
+        stringBuilder.append(" " + current.verdi);
+        System.out.println(stringBuilder);
+        for (int i = 0; i < this.antall()-1; i++) {
+            System.out.println(i);
+            current = current.neste;
+            stringBuilder.append(" " +current.verdi);
+            System.out.println(stringBuilder);
+        }
+        stringBuilder.append("]");
+        return stringBuilder.toString();
     }
 
     public String omvendtString() {
-        throw new UnsupportedOperationException();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[ ");
+        Node<T> current = this.hale;
+        stringBuilder.append(current.verdi + " ");
+        System.out.println(stringBuilder);
+        for (int i = 0; i < this.antall()-1; i++) {
+            System.out.println(i);
+            current = current.forrige;
+            stringBuilder.append(current.verdi + " ");
+            System.out.println(stringBuilder);
+        }
+        stringBuilder.append("]");
+        return stringBuilder.toString();
     }
 
     @Override
@@ -155,6 +219,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
         throw new UnsupportedOperationException();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(2334);
+        Liste<String> liste = new DobbeltLenketListe<>();
+        System.out.println(liste.antall() + " " + liste.tom());
+        String[] s = {"asda", null, "fff", "tre5", "yt", null};
+        DobbeltLenketListe<String> liste2 = new DobbeltLenketListe<>(s);
+        System.out.println(liste2.antall() + " " + liste2.tom());
+        System.out.println(liste2.omvendtString());
+        System.out.println(liste2.toString());
     }
 
 } // class DobbeltLenketListe
