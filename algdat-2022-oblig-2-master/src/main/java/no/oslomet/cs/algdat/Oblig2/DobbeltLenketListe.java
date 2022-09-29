@@ -73,14 +73,31 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
         if (this.antall>0)
         this.hale = tempList.get(tempList.size()-1);
-        
+
         for (int i = 0; i < this.antall-1; i++) {
             tempList.get(i).neste = tempList.get(i+1);
         }
     }
 
     public Liste<T> subliste(int fra, int til) {
-        throw new UnsupportedOperationException();
+        fratilKontroll(this.antall, fra, til);
+        DobbeltLenketListe<T> nyListe = new DobbeltLenketListe<>();
+        for (int i = fra; i < til; i++) {
+            nyListe.leggInn(this.hent(i));
+        }
+        System.out.println(nyListe.toString());
+        return nyListe;
+    }
+
+    private static void fratilKontroll(int antall, int fra, int til){              //  Kode fra kompendiet
+        if (fra < 0)                                  // fra er negativ
+        throw new IndexOutOfBoundsException("fra(" + fra + ") er negativ!");
+
+        if (til > antall)                          // til er utenfor tabellen
+        throw new IndexOutOfBoundsException("til(" + til + ") > antall(" + antall + ")");
+
+        if (fra > til)                                // fra er større enn til
+        throw new IllegalArgumentException("fra(" + fra + ") > til(" + til + ") - illegalt intervall!");
     }
 
     @Override
@@ -100,12 +117,45 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean leggInn(T verdi) {
-        throw new UnsupportedOperationException();
+        if (this.antall != 0){
+            Node<T> node = new Node<T>(verdi, this.hale, null);
+            this.hale.neste = node;
+            this.hale = node;
+            antall += 1;
+            endringer += 1;
+        }
+        else{
+            Node<T> node = new Node<T>(verdi, null, null);
+            this.hale = node;
+            this.hode = node;
+            antall += 1;
+            endringer += 1;
+        }
+        return true;
     }
 
     @Override
     public void leggInn(int indeks, T verdi) {
         throw new UnsupportedOperationException();
+    }
+
+    private Node<T> finnNode(int indeks) {
+        if (indeks < this.antall/2){
+            System.out.println(111);
+            Node<T> current = this.hode;
+            for (int i = 0; i < indeks; i++) {
+                current = current.neste;
+            }
+            return current;
+        }
+        else{
+            System.out.println(222);
+            Node<T> current = this.hale;
+            for (int i = this.antall-1; i > indeks; i--) {
+                current = current.forrige;
+            }
+            return current;
+        }
     }
 
     @Override
@@ -115,7 +165,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T hent(int indeks) {
-        throw new UnsupportedOperationException();
+        this.indeksKontroll(indeks, false);
+        return this.finnNode(indeks).verdi;
     }
 
     @Override
@@ -125,7 +176,15 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T oppdater(int indeks, T nyverdi) {
-        throw new UnsupportedOperationException();
+        this.indeksKontroll(indeks, false);
+        Node<T> node = finnNode(indeks);
+        if (nyverdi != null){
+            T gammelverdi = node.verdi;
+            node.verdi = nyverdi;
+            endringer += 1;
+            return gammelverdi;
+        }
+        return node.verdi;
     }
 
     @Override
@@ -145,35 +204,43 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("[");
-        Node<T> current = this.hode;
-        stringBuilder.append(" " + current.verdi);
-        System.out.println(stringBuilder);
-        for (int i = 0; i < this.antall()-1; i++) {
-            System.out.println(i);
-            current = current.neste;
-            stringBuilder.append(" " +current.verdi);
-            System.out.println(stringBuilder);
+        if (this.antall != 0){
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("[");
+            Node<T> current = this.hode;
+            stringBuilder.append(" " + current.verdi);
+            // System.out.println(stringBuilder);
+            for (int i = 0; i < this.antall()-1; i++) {
+                // System.out.println(i);
+                current = current.neste;
+                stringBuilder.append(" " +current.verdi);
+                // System.out.println(stringBuilder);
+            }
+            stringBuilder.append("]");
+            return stringBuilder.toString();
         }
-        stringBuilder.append("]");
-        return stringBuilder.toString();
+        else
+        return "[]";
     }
 
     public String omvendtString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("[ ");
-        Node<T> current = this.hale;
-        stringBuilder.append(current.verdi + " ");
-        System.out.println(stringBuilder);
-        for (int i = 0; i < this.antall()-1; i++) {
-            System.out.println(i);
-            current = current.forrige;
+        if (this.antall != 0){
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("[ ");
+            Node<T> current = this.hale;
             stringBuilder.append(current.verdi + " ");
-            System.out.println(stringBuilder);
+            // System.out.println(stringBuilder);
+            for (int i = 0; i < this.antall()-1; i++) {
+                // System.out.println(i);
+                current = current.forrige;
+                stringBuilder.append(current.verdi + " ");
+                // System.out.println(stringBuilder);
+            }
+            stringBuilder.append("]");
+            return stringBuilder.toString();
         }
-        stringBuilder.append("]");
-        return stringBuilder.toString();
+        else
+        return "[]";
     }
 
     @Override
@@ -230,6 +297,28 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         System.out.println(liste2.antall() + " " + liste2.tom());
         System.out.println(liste2.omvendtString());
         System.out.println(liste2.toString());
+        System.out.println(liste.toString());
+        liste.leggInn("Hur");
+        System.out.println(liste.toString());
+
+        DobbeltLenketListe<Integer> liste3 = new DobbeltLenketListe<>(); 
+        System.out.println(liste3.toString() + " " + liste3.omvendtString()); 
+        for (int i = 1; i <= 3; i++) { 
+            liste3.leggInn(i); 
+            System.out.println(liste3.toString() + " " + liste3.omvendtString()); 
+        } 
+        liste2.leggInn("kiruna");
+        System.out.println(liste2.toString());
+        System.out.println(liste2.hent(4));
+        System.out.println(liste2.oppdater(4, "ghyr"));
+        System.out.println(liste2.toString());
+        System.out.println(liste2.subliste(1, 5));
+        // Character[] c = {'A','B','C','D','E','F','G','H','I','J',}; 
+        // DobbeltLenketListe<Character> liste4 = new DobbeltLenketListe<>(c); 
+        // System.out.println(liste4.subliste(3,8));  // [D, E, F, G, H] 
+        // System.out.println(liste4.subliste(5,5));  // [] 
+        // System.out.println(liste4.subliste(8,liste4.antall()));  // [I, J] 
+        // // System.out.println(liste4.subliste(0,11));  // skal kaste unntak 
     }
 
 } // class DobbeltLenketListe
