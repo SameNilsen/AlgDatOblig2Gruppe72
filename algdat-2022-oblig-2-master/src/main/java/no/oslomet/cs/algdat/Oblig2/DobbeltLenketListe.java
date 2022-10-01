@@ -7,8 +7,10 @@ import java.util.ArrayList;
 
 
 import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 
@@ -136,7 +138,29 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void leggInn(int indeks, T verdi) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks, true);
+        if (this.antall == 0 || indeks == this.antall){
+            System.out.println(1);
+            this.leggInn(verdi);
+            
+        }
+        else if (indeks == 0){
+            System.out.println(2);
+            Node<T> nyNode = new Node<T>(verdi, null, this.hode);
+            this.hode = nyNode;
+            antall += 1;
+        }
+        else{
+            System.out.println(3);
+            Node<T> vNode = this.finnNode(indeks-1);
+            System.out.println(vNode.verdi);
+            Node<T> hNode = vNode.neste;
+            System.out.println(hNode.verdi);
+            Node<T> nyNode = new Node<T>(verdi, vNode, hNode);
+            vNode.neste = nyNode;
+            hNode.forrige = nyNode;
+            antall += 1;
+        }
     }
 
     private Node<T> finnNode(int indeks) {
@@ -160,7 +184,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean inneholder(T verdi) {
-        throw new UnsupportedOperationException();
+        if (this.indeksTil(verdi) != -1){
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -171,7 +198,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public int indeksTil(T verdi) {
-        throw new UnsupportedOperationException();
+        Node<T> current = this.hode;
+        for (int i = 0; i < this.antall; i++) {
+            if (current.verdi == verdi){
+                return i;
+            }
+            current = current.neste;
+        }
+        return -1;
     }
 
     @Override
@@ -189,12 +223,54 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException();
+        Node<T> current = this.hode;
+        for (int i = 0; i < this.antall; i++) {
+            if (current.verdi == verdi){
+                if (i == 0){
+                    current.neste.forrige = null;
+                    this.hode = current.neste;
+                }
+                else if (i == this.antall-1){
+                    current.forrige.neste = null;
+                    this.hale = current.forrige;
+                }
+                else{
+                    current.forrige.neste = current.neste;
+                    current.neste.forrige = current.forrige;
+                }
+                antall -= 1;
+                endringer += 1;
+                return true;
+            }
+            current = current.neste;
+        }
+        return false;
     }
 
     @Override
     public T fjern(int indeks) {
-        throw new UnsupportedOperationException();
+        // Node<T> current = this.hode;
+        // for (int i = 0; i < indeks; i++) {
+        //     current = current.neste;
+        // }
+        indeksKontroll(indeks, false);
+        Node<T> node = finnNode(indeks);
+        if (indeks == 0){
+            node.neste.forrige = null;
+            this.hode = node.neste;
+        }
+        else if (indeks == this.antall-1){
+            node.forrige.neste = null;
+            this.hale = node.forrige;
+        }
+        else{
+            node.forrige.neste = node.neste;
+            node.neste.forrige = node.forrige;
+        }
+        T verdi = node.verdi;
+        antall -= 1;
+        endringer += 1;
+        return verdi;
     }
 
     @Override
@@ -245,11 +321,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException();
+        return new DobbeltLenketListeIterator();
     }
 
     public Iterator<T> iterator(int indeks) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks, false);
+        return new DobbeltLenketListeIterator(indeks);
     }
 
     private class DobbeltLenketListeIterator implements Iterator<T> {
@@ -264,7 +341,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
 
         private DobbeltLenketListeIterator(int indeks) {
-            throw new UnsupportedOperationException();
+            for (int i = 0; i < indeks; i++) {
+                denne = denne.neste;
+            }
+            fjernOK = false;  
+            iteratorendringer = endringer; 
         }
 
         @Override
@@ -274,7 +355,20 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public T next() {
-            throw new UnsupportedOperationException();
+            if (iteratorendringer == endringer){
+                if (hasNext() ){
+                    fjernOK = true;
+                    T verdi = denne.verdi;
+                    denne = denne.neste;
+                    return verdi;
+                }
+                else{
+                    throw new NoSuchElementException();
+                }
+            }
+            else{
+                throw new ConcurrentModificationException();
+            }
         }
 
         @Override
@@ -319,6 +413,20 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         // System.out.println(liste4.subliste(5,5));  // [] 
         // System.out.println(liste4.subliste(8,liste4.antall()));  // [I, J] 
         // // System.out.println(liste4.subliste(0,11));  // skal kaste unntak 
+        System.out.println(liste2.indeksTil("asda"));
+        System.out.println(liste2.inneholder("kiruna"));
+        System.out.println(liste2.toString());
+        liste2.leggInn(4, "ryut");
+        System.out.println(liste2.toString());
+        System.out.println(liste2.fjern(4));
+        System.out.println(liste2.toString());
+
+        String[] navn = {"Lars","Dongbert","Bodil","Kari","Per","Berit"}; 
+        Liste<String> liste5 = new DobbeltLenketListe<>(navn); 
+        
+        liste5.forEach(ss -> System.out.print(ss + " ")); 
+        System.out.println(); 
+        for (String str : liste5) System.out.print(str + " "); 
     }
 
 } // class DobbeltLenketListe
