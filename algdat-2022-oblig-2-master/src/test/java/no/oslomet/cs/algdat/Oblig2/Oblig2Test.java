@@ -135,6 +135,9 @@ class Oblig2Test {
             antallFeil++;
             System.out.println("Oppgave 1q: leggInn-metoden brukes i konstruktøren!");
         }
+
+        assertEquals(0, antallFeil, "Du har for mange feil i oppgave 1");
+
     }
 
 
@@ -262,6 +265,9 @@ class Oblig2Test {
             System.out.println("Oppgave 2n: Dette (" + tid + " ms) gikk altfor sakte!");
             System.out.println("            Har du kodet toString slik det ble bedt om?");
         }
+
+        assertEquals(0, antallFeil, "Du har for mange feil i oppgave 2");
+
     }
 
     ////// Oppgave 3 /////////////////////
@@ -491,6 +497,9 @@ class Oblig2Test {
                 antallFeil++;
             }
         }
+
+        assertEquals(0, antallFeil, "Du har for mange feil i oppgave 3");
+
     }
 
     ////// Oppgave 4 /////////////////////
@@ -563,6 +572,9 @@ class Oblig2Test {
             System.out.println
                     ("Oppgave 4i: Skal gi indeks til første forekomst hvis like verdier!");
         }
+
+        assertEquals(0, antallFeil, "Du har for mange feil i oppgave 4");
+
     }
 
     ////// Oppgave 5 /////////////////////
@@ -617,7 +629,6 @@ class Oblig2Test {
                     ("Oppgave 5g: Feil i indekssjekken! 0 <= indeks <= antall er tillatt!");
 
             antallFeil++;
-            return;
         }
 
         liste = new DobbeltLenketListe<>();
@@ -645,6 +656,9 @@ class Oblig2Test {
             antallFeil++;
             System.out.println("Oppgave 5j: Feil i metoden leggInn()!");
         }
+
+        assertEquals(0, antallFeil, "Du har for mange feil i oppgave 5");
+
     }
 
     ///////// Oppgave 6 //////////////////////////
@@ -906,12 +920,14 @@ class Oblig2Test {
         long tid1 = System.currentTimeMillis();
         for (int i = 40000; i <= 50000; i++) nyliste.fjern(new Integer(i));
         tid1 = System.currentTimeMillis() - tid1;
+        System.out.println(":1::" + tid1);
         nyliste = new DobbeltLenketListe<>();
 
         for (int i = 1; i <= 100_000; i++) nyliste.leggInn(i);
         long tid2 = System.currentTimeMillis();
         for (int i = 40000; i <= 50000; i++) nyliste.fjern(i);
         tid2 = System.currentTimeMillis() - tid2;
+        System.out.println(":2::" + tid2);
 
         long maks = Math.max(tid1, tid2);
         long min = Math.min(tid1, tid2);
@@ -921,8 +937,11 @@ class Oblig2Test {
             System.out.println("ved hjelp av den andre? Eller så er en av fjern-metodene dine litt treg.");
             antallFeil++;
         }
-    }
 
+        assertEquals(0, antallFeil, "Du har for mange feil i oppgave 6");
+
+    }
+    /* 
     //// Oppgave 7 ////////////////////////////
     @org.junit.jupiter.api.Test
     void oppgave7() {
@@ -956,8 +975,11 @@ class Oblig2Test {
             antallFeil++;
             System.out.println("Oppgave 7d: Feil i metoden nullstill()!");
         }
-    }
 
+        assertEquals(0, antallFeil, "Du har for mange feil i oppgave 7");
+
+    }
+    */
     //// Oppgave 8 ////////////////////////////
     @org.junit.jupiter.api.Test
     void oppgave8() {
@@ -1148,8 +1170,11 @@ class Oblig2Test {
                 antallFeil++;
             }
         }
-    }
 
+        assertEquals(0, antallFeil, "Du har for mange feil i oppgave 8");
+
+    }
+    /*
     ////// Oppgave 9 /////////////////////
     @org.junit.jupiter.api.Test
     void oppgave9() {
@@ -1240,6 +1265,9 @@ class Oblig2Test {
                 antallFeil++;
             }
         }
+
+        assertEquals(0, antallFeil, "Du har for mange feil i oppgave 9");
+
     }
 
     ////// Oppgave 10 /////////////////////
@@ -1294,6 +1322,9 @@ class Oblig2Test {
             System.out.println("Oppgave 10f: Metoden sorterer feil!");
             antallFeil++;
         }
-    }
 
+        assertEquals(0, antallFeil, "Du har for mange feil i oppgave 10");
+
+    }
+    */
 }
