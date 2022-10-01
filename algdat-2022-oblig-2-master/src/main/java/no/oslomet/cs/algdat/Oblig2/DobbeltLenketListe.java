@@ -299,7 +299,26 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void nullstill() {
-        throw new UnsupportedOperationException();
+        // System.out.println("Metode 1:");
+        // Node<T> current = this.hode;
+        // for (int i = 0; i < this.antall; i++) {
+        //     System.out.println(current.verdi);
+        //     Node<T> nesteNode = current.neste;
+        //     current.verdi = null;
+        //     current.forrige = null;
+        //     current.neste = null;
+        //     current = nesteNode;
+        // }
+        // this.hode = null;
+        // this.hale = null;
+        // antall = 0;
+        // endringer += 1;
+        System.out.println("Metode 2:");
+        int ite = this.antall;
+        for (int i = 0; i < ite; i++) {
+            fjern(0);
+            System.out.println(i + " " + this.toString());
+        }
     }
 
     @Override
@@ -365,9 +384,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
 
         private DobbeltLenketListeIterator(int indeks) {
-            for (int i = 0; i < indeks; i++) {
-                denne = denne.neste;
-            }
+            denne = finnNode(indeks);
+            // for (int i = 0; i < indeks; i++) {
+            //     denne = denne.neste;
+            // }
             fjernOK = false;  
             iteratorendringer = endringer; 
         }
@@ -465,6 +485,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         System.out.println(a.toString());
         a.fjern("E");
         System.out.println(a.toString());
+        System.out.println(liste2.toString());
+        liste2.nullstill();
+        System.out.println(liste2);
     }
 
 } // class DobbeltLenketListe
