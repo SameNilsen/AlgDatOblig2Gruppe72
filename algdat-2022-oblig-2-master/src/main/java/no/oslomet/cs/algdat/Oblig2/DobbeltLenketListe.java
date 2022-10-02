@@ -230,18 +230,76 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         if (verdi == null){
             return false;
         }
-        if (this.antall == 1){
-            // System.out.println("eeee");
-            this.hode = null;
-            this.hale = null;
-            antall = 0;
-            endringer += 1;
-            return true;
+        // if (this.antall == 1){
+        //     // System.out.println("eeee");
+        //     this.hode = null;
+        //     this.hale = null;
+        //     antall = 0;
+        //     endringer += 1;
+        //     return true;
+        // }
+
+        /*
+        // System.out.println(this.toString() + " " + verdi);
+        Node<T> current = this.hode;
+        int indeks = 0;
+        // this.endringer = 0;
+        for (int i = 0; i < this.antall-1; i++) {
+            // this.endringer += 1;
+            indeks += 1;
+            // System.out.println(i + " " + current.verdi);
+            if (current.verdi.equals(verdi)){
+                indeks = i;
+                break;
+            }
+            current = current.neste;
+            // System.out.println(current.verdi);
         }
+        // System.out.println("1:Endringer = " + this.endringer);
+        if (current == null){
+            return false;
+        }
+        if (!current.verdi.equals(verdi)){
+            return false;
+        }
+        // System.out.println("i = " + " " + indeks);
+        if (indeks == 0){
+            if (this.antall == 1){
+                // System.out.println("eeee");
+                this.hode = null;
+                this.hale = null;
+                antall = 0;
+                endringer += 1;
+                return true;
+            }
+            current.neste.forrige = null;
+            this.hode = current.neste;
+        }
+        else if (indeks == this.antall-1){
+            current.forrige.neste = null;
+            this.hale = current.forrige;
+        }
+        else{
+            current.forrige.neste = current.neste;
+            current.neste.forrige = current.forrige;
+        }
+        antall -= 1;
+        endringer += 1;
+        return true;
+        */
+
         Node<T> current = this.hode;
         for (int i = 0; i < this.antall; i++) {
             if (current.verdi.equals(verdi)){
                 if (i == 0){
+                    if (this.antall == 1){
+                        // System.out.println("eeee");
+                        this.hode = null;
+                        this.hale = null;
+                        antall = 0;
+                        endringer += 1;
+                        return true;
+                    }
                     current.neste.forrige = null;
                     this.hode = current.neste;
                 }
@@ -278,7 +336,15 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             endringer += 1;
             return verdi;
         }
+        Node<T> current = this.hode;
+        // this.endringer = 0;
+        for (int i = 0; i < indeks; i++) {
+            // this.endringer += 1;
+            current = current.neste;
+        }
+        // System.out.println("2:Endringer = " + this.endringer);
         Node<T> node = finnNode(indeks);
+        // Node<T> node = current;
         if (indeks == 0){
             node.neste.forrige = null;
             this.hode = node.neste;
@@ -350,10 +416,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             stringBuilder.append(current.verdi);
             // System.out.println(stringBuilder);
             for (int i = 0; i < this.antall()-1; i++) {
-                System.out.println("--" + i);
+                // System.out.println("--" + i);
                 current = current.forrige;
                 stringBuilder.append(", " + current.verdi);
-                System.out.println(stringBuilder);
+                // System.out.println(stringBuilder);
             }
             stringBuilder.append("]");
             return stringBuilder.toString();
@@ -485,9 +551,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         System.out.println(a.toString());
         a.fjern("E");
         System.out.println(a.toString());
+        // System.out.println(liste2.toString());
+        // liste2.nullstill();
+        System.out.println(liste2 + "----------");
+        liste2.fjern(" ");
         System.out.println(liste2.toString());
-        liste2.nullstill();
-        System.out.println(liste2);
     }
 
 } // class DobbeltLenketListe
