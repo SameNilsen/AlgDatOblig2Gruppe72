@@ -50,7 +50,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     public DobbeltLenketListe(T[] a) {
-        // Objects.requireNonNull(a);
+        /* 
         List<Node<T>> tempList = new ArrayList<Node<T>>();
         // this.hode = new Node<T>(a[0], null, null);
         // tempList.add(this.hode);
@@ -79,6 +79,30 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         for (int i = 0; i < this.antall-1; i++) {
             tempList.get(i).neste = tempList.get(i+1);
         }
+        */
+        // if (a[0] != null)
+        // this.hode = new Node<T>(a[0], null, null);
+        
+        Node<T> current = this.hode;
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] != null){
+                if (this.hode == null){
+                    this.hode = new Node<T>(a[i], null, null);
+                    current = this.hode;
+                    antall += 1;
+                }
+                else{
+                    System.out.println(i + " " + a[i]);
+                    Node<T> newNode = new Node<T>(a[i], current, null);
+                    current.neste = newNode;
+                    this.hale = newNode;
+                    antall += 1;
+                    current = newNode;
+                }
+            }
+        }
+        // System.out.println(this.hode.verdi);
+        // System.out.println(this.hale.verdi);
     }
 
     public Liste<T> subliste(int fra, int til) {
@@ -499,8 +523,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         String[] s = {"asda", null, "fff", "tre5", "yt", null};
         DobbeltLenketListe<String> liste2 = new DobbeltLenketListe<>(s);
         System.out.println(liste2.antall() + " " + liste2.tom());
-        System.out.println(liste2.omvendtString());
         System.out.println(liste2.toString());
+        System.out.println(liste2.omvendtString());
         System.out.println(liste.toString());
         liste.leggInn("Hur");
         System.out.println(liste.toString());
