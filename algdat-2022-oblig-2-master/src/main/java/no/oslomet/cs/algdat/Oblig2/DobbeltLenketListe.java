@@ -351,6 +351,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         //     current = current.neste;
         // }
         indeksKontroll(indeks, false);
+        Node<T> node = finnNode(indeks);
         if (this.antall == 1){
             // System.out.println("eeee");
             T verdi = this.hode.verdi;
@@ -367,7 +368,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             current = current.neste;
         }
         // System.out.println("2:Endringer = " + this.endringer);
-        Node<T> node = finnNode(indeks);
         // Node<T> node = current;
         if (indeks == 0){
             node.neste.forrige = null;
