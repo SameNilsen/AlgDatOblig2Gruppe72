@@ -92,7 +92,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                     antall += 1;
                 }
                 else{
-                    System.out.println(i + " " + a[i]);
                     Node<T> newNode = new Node<T>(a[i], current, null);
                     current.neste = newNode;
                     this.hale = newNode;
@@ -101,8 +100,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                 }
             }
         }
-        // System.out.println(this.hode.verdi);
-        // System.out.println(this.hale.verdi);
     }
 
     public Liste<T> subliste(int fra, int til) {
@@ -111,7 +108,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         for (int i = fra; i < til; i++) {
             nyListe.leggInn(this.hent(i));
         }
-        System.out.println(nyListe.toString());
         return nyListe;
     }
 
@@ -166,11 +162,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         indeksKontroll(indeks, true);
         Objects.requireNonNull(verdi);
         if (this.antall == 0 || indeks == this.antall){
-            System.out.println(1);
             this.leggInn(verdi);
         }
         else if (indeks == 0){
-            System.out.println(2);
             Node<T> nyNode = new Node<T>(verdi, null, this.hode);
             this.hode.forrige = nyNode;
             this.hode = nyNode;
@@ -178,11 +172,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             endringer += 1;
         }
         else{
-            System.out.println(3);
             Node<T> vNode = this.finnNode(indeks-1);
-            System.out.println(vNode.verdi);
             Node<T> hNode = vNode.neste;
-            System.out.println(hNode.verdi);
             Node<T> nyNode = new Node<T>(verdi, vNode, hNode);
             vNode.neste = nyNode;
             hNode.forrige = nyNode;
@@ -193,7 +184,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     private Node<T> finnNode(int indeks) {
         if (indeks < this.antall/2){
-            // System.out.println(111);
             Node<T> current = this.hode;
             for (int i = 0; i < indeks; i++) {
                 current = current.neste;
@@ -201,7 +191,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             return current;
         }
         else{
-            // System.out.println(222);
             Node<T> current = this.hale;
             for (int i = this.antall-1; i > indeks; i--) {
                 current = current.forrige;
@@ -254,70 +243,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         if (verdi == null){
             return false;
         }
-        // if (this.antall == 1){
-        //     // System.out.println("eeee");
-        //     this.hode = null;
-        //     this.hale = null;
-        //     antall = 0;
-        //     endringer += 1;
-        //     return true;
-        // }
-
-        /*
-        // System.out.println(this.toString() + " " + verdi);
-        Node<T> current = this.hode;
-        int indeks = 0;
-        // this.endringer = 0;
-        for (int i = 0; i < this.antall-1; i++) {
-            // this.endringer += 1;
-            indeks += 1;
-            // System.out.println(i + " " + current.verdi);
-            if (current.verdi.equals(verdi)){
-                indeks = i;
-                break;
-            }
-            current = current.neste;
-            // System.out.println(current.verdi);
-        }
-        // System.out.println("1:Endringer = " + this.endringer);
-        if (current == null){
-            return false;
-        }
-        if (!current.verdi.equals(verdi)){
-            return false;
-        }
-        // System.out.println("i = " + " " + indeks);
-        if (indeks == 0){
-            if (this.antall == 1){
-                // System.out.println("eeee");
-                this.hode = null;
-                this.hale = null;
-                antall = 0;
-                endringer += 1;
-                return true;
-            }
-            current.neste.forrige = null;
-            this.hode = current.neste;
-        }
-        else if (indeks == this.antall-1){
-            current.forrige.neste = null;
-            this.hale = current.forrige;
-        }
-        else{
-            current.forrige.neste = current.neste;
-            current.neste.forrige = current.forrige;
-        }
-        antall -= 1;
-        endringer += 1;
-        return true;
-        */
 
         Node<T> current = this.hode;
         for (int i = 0; i < this.antall; i++) {
             if (current.verdi.equals(verdi)){
                 if (i == 0){
                     if (this.antall == 1){
-                        // System.out.println("eeee");
                         this.hode = null;
                         this.hale = null;
                         antall = 0;
@@ -346,14 +277,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T fjern(int indeks) {
-        // Node<T> current = this.hode;
-        // for (int i = 0; i < indeks; i++) {
-        //     current = current.neste;
-        // }
         indeksKontroll(indeks, false);
         Node<T> node = finnNode(indeks);
         if (this.antall == 1){
-            // System.out.println("eeee");
             T verdi = this.hode.verdi;
             this.hode = null;
             this.hale = null;
@@ -362,13 +288,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             return verdi;
         }
         Node<T> current = this.hode;
-        // this.endringer = 0;
         for (int i = 0; i < indeks; i++) {
-            // this.endringer += 1;
             current = current.neste;
         }
-        // System.out.println("2:Endringer = " + this.endringer);
-        // Node<T> node = current;
         if (indeks == 0){
             node.neste.forrige = null;
             this.hode = node.neste;
@@ -389,7 +311,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void nullstill() {
-        // System.out.println("Metode 1:");
+        //         METODE 1
         // Node<T> current = this.hode;
         // for (int i = 0; i < this.antall; i++) {
         //     System.out.println(current.verdi);
@@ -403,11 +325,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         // this.hale = null;
         // antall = 0;
         // endringer += 1;
-        System.out.println("Metode 2:");
+
+        //         METODE 2
         int ite = this.antall;
         for (int i = 0; i < ite; i++) {
             fjern(0);
-            System.out.println(i + " " + this.toString());
         }
     }
 
@@ -418,12 +340,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             stringBuilder.append("[");
             Node<T> current = this.hode;
             stringBuilder.append(current.verdi);
-            // System.out.println(stringBuilder);
             for (int i = 0; i < this.antall()-1; i++) {
-                // System.out.println(i);
                 current = current.neste;
                 stringBuilder.append(", " +current.verdi);
-                // System.out.println(stringBuilder);
             }
             stringBuilder.append("]");
             return stringBuilder.toString();
@@ -438,12 +357,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             stringBuilder.append("[");
             Node<T> current = this.hale;
             stringBuilder.append(current.verdi);
-            // System.out.println(stringBuilder);
             for (int i = 0; i < this.antall()-1; i++) {
-                // System.out.println("--" + i);
                 current = current.forrige;
                 stringBuilder.append(", " + current.verdi);
-                // System.out.println(stringBuilder);
             }
             stringBuilder.append("]");
             return stringBuilder.toString();
@@ -475,9 +391,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         private DobbeltLenketListeIterator(int indeks) {
             denne = finnNode(indeks);
-            // for (int i = 0; i < indeks; i++) {
-            //     denne = denne.neste;
-            // }
             fjernOK = false;  
             iteratorendringer = endringer; 
         }
