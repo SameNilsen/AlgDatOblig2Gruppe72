@@ -1,7 +1,6 @@
 package no.oslomet.cs.algdat.Oblig2;
 
 
-import java.util.ArrayList;
 
 ////////////////// class DobbeltLenketListe //////////////////////////////
 
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -50,38 +48,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     public DobbeltLenketListe(T[] a) {
-        /* 
-        List<Node<T>> tempList = new ArrayList<Node<T>>();
-        // this.hode = new Node<T>(a[0], null, null);
-        // tempList.add(this.hode);
-        // this.antall += 1;
-        for (int i = 0; i < a.length; i++) {
-            System.out.println(i);
-            for (Node<T> node : tempList) {
-                System.out.println(node.verdi);
-            }
-            if (a[i] != null){
-                if (tempList.size() == 0){
-                    this.hode = new Node<T>(a[i], null, null);
-                    tempList.add(this.hode);
-                    this.antall += 1;
-                }
-                else{
-                    Node<T> node = new Node<T>(a[i], tempList.get(tempList.size()-1), null);
-                    tempList.add(node);
-                    this.antall += 1;
-                }
-            }
-        }
-        if (this.antall>0)
-        this.hale = tempList.get(tempList.size()-1);
-
-        for (int i = 0; i < this.antall-1; i++) {
-            tempList.get(i).neste = tempList.get(i+1);
-        }
-        */
-        // if (a[0] != null)
-        // this.hode = new Node<T>(a[0], null, null);
         
         Node<T> current = this.hode;
         for (int i = 0; i < a.length; i++) {
@@ -427,72 +393,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
         throw new UnsupportedOperationException();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(2334);
-        Liste<String> liste = new DobbeltLenketListe<>();
-        System.out.println(liste.antall() + " " + liste.tom());
-        String[] s = {"asda", null, "fff", "tre5", "yt", null};
-        DobbeltLenketListe<String> liste2 = new DobbeltLenketListe<>(s);
-        System.out.println(liste2.antall() + " " + liste2.tom());
-        System.out.println(liste2.toString());
-        System.out.println(liste2.omvendtString());
-        System.out.println(liste.toString());
-        liste.leggInn("Hur");
-        System.out.println(liste.toString());
-
-        DobbeltLenketListe<Integer> liste3 = new DobbeltLenketListe<>(); 
-        System.out.println(liste3.toString() + " " + liste3.omvendtString()); 
-        for (int i = 1; i <= 3; i++) { 
-            liste3.leggInn(i); 
-            System.out.println(liste3.toString() + " " + liste3.omvendtString()); 
-        } 
-        liste2.leggInn("kiruna");
-        System.out.println(liste2.toString());
-        System.out.println(liste2.hent(4));
-        System.out.println(liste2.oppdater(4, "ghyr"));
-        System.out.println(liste2.toString());
-        System.out.println(liste2.subliste(1, 5));
-        // Character[] c = {'A','B','C','D','E','F','G','H','I','J',}; 
-        // DobbeltLenketListe<Character> liste4 = new DobbeltLenketListe<>(c); 
-        // System.out.println(liste4.subliste(3,8));  // [D, E, F, G, H] 
-        // System.out.println(liste4.subliste(5,5));  // [] 
-        // System.out.println(liste4.subliste(8,liste4.antall()));  // [I, J] 
-        // // System.out.println(liste4.subliste(0,11));  // skal kaste unntak 
-        System.out.println(liste2.indeksTil("asda"));
-        System.out.println(liste2.inneholder("kiruna"));
-        System.out.println(liste2.toString());
-        liste2.leggInn(4, "ryut");
-        System.out.println(liste2.toString());
-        System.out.println(liste2.fjern(4));
-        System.out.println(liste2.toString());
-
-        String[] navn = {"Lars","Dongbert","Bodil","Kari","Per","Berit"}; 
-        Liste<String> liste5 = new DobbeltLenketListe<>(navn); 
-        
-        liste5.forEach(ss -> System.out.print(ss + " ")); 
-        System.out.println(); 
-        for (String str : liste5) System.out.print(str + " "); 
-        System.out.println();
-        System.out.println("-------");
-        DobbeltLenketListe<String> a = new DobbeltLenketListe<>();
-        System.out.println(a.toString()); 
-        a.leggInn("C");
-        a.leggInn("E");
-        a.leggInn("H");
-        System.out.println(a.toString());
-        System.out.println(a.omvendtString());
-        a.fjern("H");
-        a.fjern("C");
-        System.out.println(a.toString());
-        a.fjern("E");
-        System.out.println(a.toString());
-        // System.out.println(liste2.toString());
-        // liste2.nullstill();
-        System.out.println(liste2 + "----------");
-        liste2.fjern(" ");
-        System.out.println(liste2.toString());
     }
 
 } // class DobbeltLenketListe
